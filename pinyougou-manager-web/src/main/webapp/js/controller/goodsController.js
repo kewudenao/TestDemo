@@ -76,5 +76,17 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 			}			
 		);
 	}
-    
+
+	$scope.updateStatus=function (status){
+		goodsService.updateStatus($scope.selectIds,status).success(
+			function (response){
+				if (response.success){
+					$scope.reloadList();
+					$scope.selectIds=[];
+				}else{
+					alert(response.message);
+				}
+			}
+		);
+	}
 });	
