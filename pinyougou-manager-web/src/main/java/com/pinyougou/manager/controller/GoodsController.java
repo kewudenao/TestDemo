@@ -139,15 +139,15 @@ public class GoodsController {
 	 * @param marketabel
 	 * @return
 	 */
-	@RequestMapping("/updateMarketabel")
-	public Result updateMarketabel(Long[] ids, String marketabel){
-		try {
-			goodsService.updateMarketabel(ids,marketabel,null);
-			return new Result(true,"操作成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new Result(false,"操作失败");
-		}
-	}
+//	@RequestMapping("/updateMarketabel")
+//	public Result updateMarketabel(Long[] ids, String marketabel){
+//		try {
+//			goodsService.updateMarketabel(ids,marketabel,null);
+//			return new Result(true,"操作成功");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return new Result(false,"操作失败");
+//		}
+//	}
 
 }
