@@ -1,11 +1,11 @@
  //控制层 
-app.controller('goodsController' ,function($scope,$controller   ,goodsService,itemCatService){
+app.controller('contentController' ,function($scope,$controller   ,contentService,uploadService,contentCategoryService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
     //读取列表数据绑定到表单中  
 	$scope.findAll=function(){
-		goodsService.findAll().success(
+		contentService.findAll().success(
 			function(response){
 				$scope.list=response;
 			}			
@@ -14,7 +14,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,it
 	
 	//分页
 	$scope.findPage=function(page,rows){			
-		goodsService.findPage(page,rows).success(
+		contentService.findPage(page,rows).success(
 			function(response){
 				$scope.list=response.rows;	
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
@@ -24,7 +24,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,it
 	
 	//查询实体 
 	$scope.findOne=function(id){				
-		goodsService.findOne(id).success(
+		contentService.findOne(id).success(
 			function(response){
 				$scope.entity= response;					
 			}
@@ -35,9 +35,9 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,it
 	$scope.save=function(){				
 		var serviceObject;//服务层对象  				
 		if($scope.entity.id!=null){//如果有ID
-			serviceObject=goodsService.update( $scope.entity ); //修改  
+			serviceObject=contentService.update( $scope.entity ); //修改  
 		}else{
-			serviceObject=goodsService.add( $scope.entity  );//增加 
+			serviceObject=contentService.add( $scope.entity  );//增加 
 		}				
 		serviceObject.success(
 			function(response){
@@ -55,7 +55,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,it
 	//批量删除 
 	$scope.dele=function(){			
 		//获取选中的复选框			
-		goodsService.dele( $scope.selectIds ).success(
+		contentService.dele( $scope.selectIds ).success(
 			function(response){
 				if(response.success){
 					$scope.reloadList();//刷新列表
@@ -69,7 +69,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,it
 	
 	//搜索
 	$scope.search=function(page,rows){			
-		goodsService.search(page,rows,$scope.searchEntity).success(
+		contentService.search(page,rows,$scope.searchEntity).success(
 			function(response){
 				$scope.list=response.rows;	
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
@@ -77,32 +77,22 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService,it
 		);
 	}
 
-
-    $scope.status=["未审核","已审核","审核未通过","关闭"];//状态
-
-    $scope.itemCatList=[];//商品分类列表  以商品分类ID作为下标  ，以商品分类名称作为值
-
-    //查询商品分类列表
-    $scope.findItemCatList=function () {
-        itemCatService.findAll().success(function (response) {
-            for(var i=0;i<response.length;i++){
-                var itemCat= response[i];
-                $scope.itemCatList[itemCat.id  ]= itemCat.name;
+	//图片上传
+    $scope.uploadImage=function () {
+        uploadService.upload().success(function (response) {
+            if(response.error==0){//成功
+                $scope.entity.pic =response.url;
             }
         })
     }
 
-    //更改状态
-    $scope.updateStatus=function (status) {
-		goodsService.updateStatus( $scope.selectIds ,status).success(function (response) {
-			if(response.success){
-				$scope.reloadList();
-				$scope.selectIds=[];//清空
-			}else{
-				alert(response.message);
-			}
+    //查询广告分类列表
+    $scope.findContentCategoryList=function(){
+		contentCategoryService.findAll().success(function (response) {
+			$scope.contentCategoryList=response;
         })
-    }
+	}
 
+	$scope.status=['无效','有效'];// 状态
     
 });	

@@ -5,31 +5,34 @@
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<http pattern="/login.html" security="none"></http>
+	<http pattern="/js/**" security="none"></http>
 	<http pattern="/css/**" security="none"></http>
 	<http pattern="/img/**" security="none"></http>
-	<http pattern="/js/**" security="none"></http>
 	<http pattern="/plugins/**" security="none"></http>
-
-	<!--拦截规则-->
-	<http use-expressions="false">
-		<intercept-url pattern="/**" access="ROLE_ADMIN"/>
-		<form-login login-page="/login.html"
-					default-target-url="/admin/index.html"
-					authentication-failure-url="/login.html"
-					always-use-default-target="true"/>
+	<!--配置页面的拦截规则   use-expressions:是否开启SPel表达式-->
+	<http  use-expressions="false">
+		<!--定义某资源必须有哪个角色的用户才可以访问  角色必须是ROLE_ 开头   -->
+		<intercept-url pattern="/**" access="ROLE_USER" ></intercept-url>
+		<!--产生登录表单-->
+		<form-login login-page="/login.html" always-use-default-target="true" default-target-url="/admin/index.html"    />
+		<!--退出登录  自动产生退出登录的地址  /logout -->
+		<logout/>
 		<csrf disabled="true"/>
+		<!--配置浏览器的同源策略-->
 		<headers>
+			<!--  SAMEORIGIN  当框架页包含的页面与框架页处于同一个域(地址、端口、协议相同)，放行 -->
 			<frame-options policy="SAMEORIGIN"/>
 		</headers>
-		<logout/>
 	</http>
 
+	<!--认证管理器 用于定义用户与角色的对应关系 -->
 	<authentication-manager>
 		<authentication-provider>
 			<user-service>
-				<user name="admin" password="123456" authorities="ROLE_ADMIN"/>
-				<user name="sunwukong" password="123456" authorities="ROLE_ADMIN"/>
+				<user name="admin" password="123456" authorities="ROLE_USER"	></user>
 			</user-service>
 		</authentication-provider>
 	</authentication-manager>
+
+
 </beans:beans>

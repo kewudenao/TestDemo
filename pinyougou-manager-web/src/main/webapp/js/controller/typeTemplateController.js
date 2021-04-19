@@ -22,25 +22,22 @@ app.controller('typeTemplateController' ,function($scope,$controller   ,typeTemp
 		);
 	}
 	
-	//查询实体 
-	$scope.findOne=function(id){				
-		typeTemplateService.findOne(id).success(
-			function(response){
-				$scope.entity= response;
-			// 	//品牌字段
-			// 	$scope.entity.brandIds=JSON.parse($scope.entity.brandIds);
-			// 	//规格字段
-			// 	$scope.entity.specIds=JSON.parse($scope.entity.specIds);
-			// 	//自定义字段
-			// 	$scope.entity.customAttributeItems= JSON.parse($scope.entity.customAttributeItems);
-			//
-				$scope.entity.brandIds=  JSON.parse($scope.entity.brandIds);//转换品牌列表
-				$scope.entity.specIds=  JSON.parse($scope.entity.specIds);//转换规格列表
+	//查询实体
+    $scope.findOne=function(id){
+        typeTemplateService.findOne(id).success(
+            function(response){
+                $scope.entity= response;
+                // 转换品牌字段的类型
+                $scope.entity.brandIds= JSON.parse($scope.entity.brandIds) ;// JSON.parse 将字符串转换为对象  JSON.stringify(object)  将对象转换为字符串
+				//  转换规格字段类型
+				$scope.entity.specIds=JSON.parse( $scope.entity.specIds );
+				// 转换自定义属性字段的类型
 				$scope.entity.customAttributeItems= JSON.parse($scope.entity.customAttributeItems);
 
-			}
-		);				
-	}
+
+            }
+        );
+    }
 	
 	//保存 
 	$scope.save=function(){				
@@ -87,31 +84,30 @@ app.controller('typeTemplateController' ,function($scope,$controller   ,typeTemp
 			}			
 		);
 	}
-	$scope.brandList={};
 
-	$scope.findBrandList=function (){
-		brandService.selectOptionList().success(
-			function (response){
-				$scope.brandList={data:response};
-			}
-		)
+	$scope.brandList={data:[]};//品牌列表
+	//查询品牌列表
+	$scope.findBrandList=function(){
+		brandService.selectOptionList().success(function(response){
+			$scope.brandList={data:response};
+		})
 	}
 
-	$scope.specificationList={};
+	$scope.specList={data:[]};//规格列表
+	//查询规格列表
+	$scope.findSpecList=function () {
+		specificationService.selectOptionList().success(function (response) {
+			$scope.specList={data:response};
+        })
+    }
 
-	$scope.findSpecificationList=function (){
-		specificationService.selectOptionList().success(
-			function (response){
-				$scope.specificationList={data:response};
-			}
-		)
-	}
-
-	$scope.addTableRow=function (){
+    //增加表格行
+    $scope.addTableRow=function () {
 		$scope.entity.customAttributeItems.push({});
-	}
-
-	$scope.deleteTableRow=function (index){
+    }
+    //删除表格行
+    $scope.deleteTableRow=function (index) {
 		$scope.entity.customAttributeItems.splice(index,1);
-	}
+    }
+
 });	

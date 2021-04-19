@@ -14,14 +14,13 @@
 	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
 
-	<script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
-
+	<script src="../plugins/angularjs/angular.min.js"></script>
 	<script src="../js/base.js"></script>
 	<script src="../js/service/itemCatService.js"></script>
-	<script type="text/javascript" src="../js/service/typeTemplateService.js">  </script>
-	<!--	控制器-->
+	<script src="../js/service/typeTemplateService.js"></script>
 	<script src="../js/controller/baseController.js"></script>
 	<script src="../js/controller/itemCatController.js"></script>
+    
 </head>
 
 <body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="itemCatController" ng-init="findByParentId(0);findTypeTemplateList()">
@@ -70,22 +69,23 @@
 			                          </tr>
 			                      </thead>
 			                      <tbody>
-									  <tr ng-repeat="entity in list">
+			                          <tr ng-repeat="entity in list">
 			                              <td><input  type="checkbox" ng-click="updateSelection($event,entity.id)"></td>
 				                          <td>{{entity.id}}</td>
 									      <td>{{entity.name}}</td>
 									      <td>
-											  {{typeTemplateMap[entity.typeId]}}
+									      	{{ typeTemplateMap[ entity.typeId ]}}
 									      </td>									      
 		                                  <td class="text-center">		                                     
 		                                      <button ng-if="breadcrumb.length<3" type="button" class="btn bg-olive btn-xs" ng-click="search(entity.id,entity.name)">查询下级</button>
-		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" ng-click="findOne(entity.id)">修改</button>
+		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" ng-click="findOne(entity.id)" >修改</button>
 		                                  </td>
 			                          </tr>
+
 			                      </tbody>
 			                  </table>
 			                  <!--数据列表/-->                      
-						
+
                         </div>
                         <!-- 数据表格 /-->
                         
@@ -110,25 +110,28 @@
 				<tr>
 		      		<td>上级商品分类</td>
 		      		<td>
-						<span ng-repeat="pojo in breadcrumb">
-							{{pojo.name}}  >></span>
+		      		   <span ng-repeat="pojo in breadcrumb">
+						   {{pojo.name}} >>
+					   </span>
 		      		</td>
 		      	</tr>
 		      	<tr>
 		      		<td>商品分类名称</td>
-		      		<td><input  class="form-control" placeholder="商品分类名称" ng-model="entity.name">  </td>
+		      		<td><input  ng-model="entity.name" class="form-control" placeholder="商品分类名称">  </td>
 		      	</tr>			  
 		      	<tr>
 		      		<td>类型模板</td>
-		      		<td>
-						<select ng-model="entity.typeId" ng-options="item.id as item.name for item in typeTemplateList"></select>
+		      		<td>	      		
+
+						<select ng-model="entity.typeId" ng-options="item.id as item.name for item in typeTemplateList" ></select>
+
 		      		</td>		      		      		
 		      	</tr>		      	
 			 </table>				
 			
 		</div>
 		<div class="modal-footer">						
-			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="save()">保存</button>
+			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true"  ng-click="save()">保存</button>
 			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		</div>
 	  </div>

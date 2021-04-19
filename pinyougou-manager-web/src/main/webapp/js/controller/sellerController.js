@@ -77,15 +77,12 @@ app.controller('sellerController' ,function($scope,$controller   ,sellerService)
 		);
 	}
 
+	//审核
 	$scope.updateStatus=function (sellerId,status) {
-		sellerService.updateStatus(sellerId,status).success(
-			function (response) {
-				if (response.success){
-					$scope.reloadList();
-				}else {
-					alert("失败");
-				}
-			}
-		)
-	}
+		sellerService.updateStatus(sellerId,status).success(function (response) {
+			alert(response.message);
+            $scope.reloadList();//重新加载
+        })
+    }
+
 });	

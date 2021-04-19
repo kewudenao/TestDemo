@@ -1,1 +1,1 @@
-var app=angular.module('pinyougou', ['pagination']);//定义模块
+var app=angular.module("pinyougou",["pagination"]);//构建模块

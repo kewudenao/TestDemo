@@ -1,46 +1,48 @@
-app.controller('baseController',function($scope){
-    //切换页码
-    $scope.reloadList=function(){
-        //切换页码
-        $scope.search($scope.paginationConf.currentPage,
-            $scope.paginationConf.itemsPerPage);
-    }
+app.controller("baseController",function ($scope) {//父控制器
 
-    //分页控制
+    $scope.searchEntity={};
+
+    //分页配置
     $scope.paginationConf={
-        currentPage:1,
-        totalItems:10,
-        itemsPerPage:10,
-        perPageOptions:[10, 20, 30, 40, 50],
-        onChange:function (){
+        currentPage: 1,//当前页
+        totalItems: 10,//总记录数
+        itemsPerPage: 10,//每页记录数
+        perPageOptions: [10, 20, 30, 40, 50],//页码选项
+        onChange: function(){	//当页码发生变化的时候自动触发的方法
             $scope.reloadList();
         }
     }
 
-    $scope.selectIds=[];
+    //重新加载记录
+    $scope.reloadList=function(){
+        $scope.search( $scope.paginationConf.currentPage,$scope.paginationConf.itemsPerPage );
+    }
 
-    $scope.updateSelection=function ($event,id){
-        if ($event.target.checked){
-            $scope.selectIds.push(id);
-        }else {
-            //splice js中删除数据的方法
-            var idx = $scope.selectIds.indexOf(id);
-            $scope.selectIds.splice(idx,1);
+
+    $scope.selectIds=[];//选中的ID数组
+    $scope.updateSelection=function($event,id){
+        if($event.target.checked){//判断是否选中
+            $scope.selectIds.push( id );
+        }else{
+            //splice删除
+            var idx= $scope.selectIds.indexOf(id);//ID在数组中的位置
+            $scope.selectIds.splice( idx ,1);
         }
     }
 
-    $scope.searchEntity  = {};//自定义搜索对象
+    //提取json中的数据
+    $scope.jsonToString=function (jsonString,key) {
 
-    $scope.jsonToString=function (jsonString){
-        var json = JSON.parse(jsonString);
+        var json= JSON.parse( jsonString );
         var value="";
-
-        for (var i=0;i<json.length;i++){
-            if (i>0){
+        for(var i=0;i<json.length;i++ ){
+            if(i>0){
                 value+=",";
             }
-            value+=json[i].text;
+            value+= json[i][key];
         }
         return value;
+
     }
-});
+
+})

@@ -32,7 +32,7 @@ app.controller('specificationOptionController' ,function($scope,$controller   ,s
 	}
 	
 	//保存 
-	$scope.save=function(){
+	$scope.save=function(){				
 		var serviceObject;//服务层对象  				
 		if($scope.entity.id!=null){//如果有ID
 			serviceObject=specificationOptionService.update( $scope.entity ); //修改  

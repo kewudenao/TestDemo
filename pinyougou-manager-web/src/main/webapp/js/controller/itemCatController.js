@@ -43,7 +43,7 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 			function(response){
 				if(response.success){
 					//重新查询 
-		        	$scope.findByParentId($scope.entity.parentId);//重新加载
+		        	$scope.findByParentId($scope.entity.parentId );//重新加载
 				}else{
 					alert(response.message);
 				}
@@ -58,7 +58,7 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 		itemCatService.dele( $scope.selectIds ).success(
 			function(response){
 				if(response.success){
-					$scope.findByParentId($scope.entity.parentId);//刷新列表
+					$scope.findByParentId($scope.entity.parentId);
 					$scope.selectIds=[];
 				}else{
 					alert(response.message);
@@ -69,45 +69,44 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 	
 	$scope.searchEntity={};//定义搜索对象 
 	
-	//搜索
 
-	$scope.entity={parentId:0};
+	$scope.entity={ parentId:0};//页面打开的时候 上级ID 才是0
 
-	$scope.findByParentId=function (parentId) {
-		$scope.entity={parentId:parentId};
-		itemCatService.findByParentId(parentId).success(
-			function (response) {
-				$scope.list=response;
-			}
-		)
-
+	//根据上级ID查询商品分类
+	$scope.findByParentId=function(parentId){
+		$scope.entity={parentId:parentId };//更新上级ID
+        itemCatService.findByParentId(parentId).success(function (response) {
+            $scope.list= response;
+        })
 	}
 
-	$scope.breadcrumb=[{id:0,name:"顶级分类列表"}];
+	$scope.breadcrumb=[{id:0,name:"顶级商品分类"}];//面包屑
 
-	$scope.search=function (id,name){
-		$scope.breadcrumb.push({id:id, name:name});
-		$scope.findByParentId(id);
-	}
+	$scope.search=function (id,name) {
+        $scope.breadcrumb.push({id:id,name:name});//向面包屑添加数据
+        $scope.findByParentId(id);//查询列表
+    }
 
-	$scope.showList=function (index,id){
-		$scope.breadcrumb.splice(index+1,2);
-		$scope.findByParentId(id);
+    $scope.showList=function(index,id){
+        $scope.breadcrumb.splice(index+1,2);//截断面包屑
+        $scope.findByParentId(id);//查询列表
 	}
 
 	$scope.typeTemplateMap=[];
-	$scope.findTypeTemplateList=function (){
-		typeTemplateService.findAll().success(
-			function (response){
-				$scope.typeTemplateList=response;
 
-				//构建模板数据，用于列表显示名称
-				for (var i=0;i<$scope.typeTemplateList.length;i++){
-					var typetemplate = $scope.typeTemplateList[i];
-					$scope.typeTemplateMap[typetemplate.id]=typetemplate.name;
-				}
+	//查询模板列表
+	$scope.findTypeTemplateList=function () {
+		typeTemplateService.findAll().success(function (response){
+			$scope.typeTemplateList=response;//模板列表[{},{}]
+
+			//构建模板数据，用于列表显示名称
+            $scope.typeTemplateMap=[];
+            for(var i=0;i<$scope.typeTemplateList.length;i++){
+                var typeTemplate= $scope.typeTemplateList[i];
+                $scope.typeTemplateMap[typeTemplate.id]=typeTemplate.name;
 			}
-		)
-	}
+
+        })
+    }
 
 });	

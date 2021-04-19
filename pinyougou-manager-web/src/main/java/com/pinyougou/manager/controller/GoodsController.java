@@ -2,6 +2,7 @@ package com.pinyougou.manager.controller;
 import java.util.List;
 
 import com.pinyougou.pojogroup.Goods;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -102,7 +103,7 @@ public class GoodsController {
 	
 		/**
 	 * 查询+分页
-	 * @param brand
+	 * @param
 	 * @param page
 	 * @param rows
 	 * @return
@@ -111,5 +112,42 @@ public class GoodsController {
 	public PageResult search(@RequestBody TbGoods goods, int page, int rows  ){
 		return goodsService.findPage(goods, page, rows);		
 	}
-	
+
+
+
+	/**
+	 * 修改状态
+	 * @param ids  主键集合
+	 * @param status 状态
+	 */
+	@RequestMapping("/updateStatus")
+	public Result updateStatus(Long[] ids, String status){
+
+		try {
+			goodsService.updateStatus(ids,status);
+			return new Result(true,"审核成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false,"审核失败");
+		}
+	}
+
+
+	/**
+	 * 上下架
+	 * @param ids
+	 * @param marketabel
+	 * @return
+	 */
+	@RequestMapping("/updateMarketabel")
+	public Result updateMarketabel(Long[] ids, String marketabel){
+		try {
+			goodsService.updateMarketabel(ids,marketabel,null);
+			return new Result(true,"操作成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false,"操作失败");
+		}
+	}
+
 }

@@ -32,29 +32,28 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 	}
 	
 	//保存 
-	$scope.save=function(){
-		var serviceObject;//服务层对象
+	$scope.save=function(){				
+		var serviceObject;//服务层对象  				
 		if($scope.entity.specification.id!=null){//如果有ID
-			serviceObject=specificationService.update( $scope.entity ); //修改
+			serviceObject=specificationService.update( $scope.entity ); //修改  
 		}else{
-			serviceObject=specificationService.add( $scope.entity  );//增加
-		}
+			serviceObject=specificationService.add( $scope.entity  );//增加 
+		}				
 		serviceObject.success(
 			function(response){
 				if(response.success){
-					//重新查询
-					$scope.reloadList();//重新加载
+					//重新查询 
+		        	$scope.reloadList();//重新加载
 				}else{
 					alert(response.message);
 				}
-			}
-		);
+			}		
+		);				
 	}
-
-
-
+	
+	 
 	//批量删除 
-	$scope.dele=function(){
+	$scope.dele=function(){			
 		//获取选中的复选框			
 		specificationService.dele( $scope.selectIds ).success(
 			function(response){
@@ -77,18 +76,15 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 			}			
 		);
 	}
-	//增加规格选项
 
+	//增加规格选项行
 	$scope.addTableRow=function () {
 		$scope.entity.specificationOptionList.push({});
+    }
 
+    //删除规格选项行
+    $scope.deleteTableRow=function(index){
+        $scope.entity.specificationOptionList.splice( index ,1 );
 	}
-
-
-	//删除规格选项行
-	$scope.deleteTableRow=function(index){
-		$scope.entity.specificationOptionList.splice( index ,1 );
-
-	}
-
+    
 });	

@@ -101,7 +101,7 @@ public class SellerController {
 	
 		/**
 	 * 查询+分页
-	 * @param seller
+	 * @param
 	 * @param page
 	 * @param rows
 	 * @return
@@ -112,13 +112,15 @@ public class SellerController {
 	}
 
 	@RequestMapping("/updateStatus")
-	public Result updateStatus(String sellerId,String status){
+	public Result updateStatus(String sellerId, String status){
 		try {
 			sellerService.updateStatus(sellerId,status);
-			return new Result(true,"成功");
+			return new Result(true,"操作成功");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Result(false,"失败");
+			return new Result(false,"操作失败");
 		}
+
 	}
+
 }
