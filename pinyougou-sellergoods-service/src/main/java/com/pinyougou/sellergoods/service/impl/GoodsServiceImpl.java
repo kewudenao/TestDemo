@@ -16,6 +16,7 @@ import com.pinyougou.pojo.TbGoodsExample.Criteria;
 import com.pinyougou.sellergoods.service.GoodsService;
 
 import entity.PageResult;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 服务实现层
@@ -23,6 +24,7 @@ import entity.PageResult;
  *
  */
 @Service
+@Transactional
 public class GoodsServiceImpl implements GoodsService {
 
 	@Autowired
@@ -44,7 +46,8 @@ public class GoodsServiceImpl implements GoodsService {
 	 */
 	@Override
 	public List<TbGoods> findAll() {
-		return goodsMapper.selectByExample(null);
+
+		return  goodsMapper.selectByExample(null);
 	}
 
 	/**
@@ -118,10 +121,18 @@ public class GoodsServiceImpl implements GoodsService {
 	 * 批量删除
 	 */
 	@Override
-	public void delete(Long[] ids) {
+	public void delete(Long[] ids,String sellerId) {
 		for(Long id:ids){
-			goodsMapper.deleteByPrimaryKey(id);
-		}		
+			TbGoods goods = goodsMapper.selectByPrimaryKey(id);
+			if (sellerId!=null&&!goods.getSellerId().equals(sellerId)){
+				continue;
+			}
+			if ("1".equals(goods.getIsMarketable())){
+				continue;
+			}
+			goods.setIsDelete("1");
+			goodsMapper.updateByPrimaryKey(goods);
+		}
 	}
 	
 	
@@ -171,6 +182,23 @@ public class GoodsServiceImpl implements GoodsService {
 			TbGoods goods = goodsMapper.selectByPrimaryKey(id);
 			goods.setAuditStatus(status);
 			goodsMapper.updateByPrimaryKey(goods);
+		}
+	}
+
+	@Override
+	public void updateMarketable(Long[] ids, String marketable, String sellerId) {
+		for (Long id:ids){
+			TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+			//判断是否为该商家的商品
+			if (!tbGoods.getSellerId().equals(sellerId)&&sellerId!=null){
+				continue;
+			}
+			//未审核的商品不能做上架操作
+			if(!"1".equals(tbGoods.getSellerId())&&"1".equals(marketable)){
+				continue;
+			}
+			tbGoods.setIsMarketable(marketable);
+			goodsMapper.updateByPrimaryKey(tbGoods);
 		}
 	}
 
@@ -226,4 +254,5 @@ public class GoodsServiceImpl implements GoodsService {
 			item.setImage((String) imageList.get(0).get("url"));
 		}
 	}
+
 }

@@ -9,10 +9,12 @@
         <module name="pinyougou-manager-web" />
         <module name="pinyougou-common" />
         <module name="pinyougou-shop-web" />
+        <module name="pinyougou-content-interface" />
         <module name="pinyougou-pojo" />
         <module name="pinyougou-sellergoods-service" />
         <module name="pinyougou-sellergoods-interface" />
         <module name="pinyougou-dao" />
+        <module name="pinyougou-content-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

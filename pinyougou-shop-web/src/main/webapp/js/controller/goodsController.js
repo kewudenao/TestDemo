@@ -268,6 +268,7 @@ app.controller('goodsController' ,function($scope,$controller,$location ,goodsSe
 	 * 上下架
 	 * @param marketabel
 	 */
+	$scope.marketable=["未上架","已上架"];
 	$scope.updateMarketabel=function (marketabel) {
 		goodsService.updateMarketabel( $scope.selectIds , marketabel).success(function (response) {
 			alert(response.message)	;

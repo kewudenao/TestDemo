@@ -93,7 +93,7 @@ public class GoodsController {
 	@RequestMapping("/delete")
 	public Result delete(Long [] ids){
 		try {
-			goodsService.delete(ids);
+			goodsService.delete(ids,null);
 			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,18 +136,19 @@ public class GoodsController {
 	/**
 	 * 上下架
 	 * @param ids
-	 * @param marketabel
+	 * @param marketable
 	 * @return
 	 */
-//	@RequestMapping("/updateMarketabel")
-//	public Result updateMarketabel(Long[] ids, String marketabel){
-//		try {
-//			goodsService.updateMarketabel(ids,marketabel,null);
-//			return new Result(true,"操作成功");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return new Result(false,"操作失败");
-//		}
-//	}
+	@RequestMapping("/updateMarketable")
+	public Result updateMarketable(Long[] ids, String marketable){
+		try {
+			goodsService.updateMarketable(ids,marketable,null);
+			return new Result(true,"状态更新成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false,"状态更新失败");
+		}
+	}
+
 
 }

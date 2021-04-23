@@ -49,7 +49,7 @@ public interface GoodsService {
 	 * 批量删除
 	 * @param ids
 	 */
-	public void delete(Long[] ids);
+	public void delete(Long[] ids,String sellerId);
 
 	/**
 	 * 分页
@@ -62,4 +62,8 @@ public interface GoodsService {
      *  修改商品审核状态
      */
     public void updateStatus(Long [] ids,String status);
+	/**
+	 * 商品上下架
+	 */
+	public void updateMarketable(Long []ids ,String marketable,String sellerId);
 }
